@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Interactive Photo Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+        }
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+        figure {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-align: center;
+            margin: 0;
+            position: relative;
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+        figcaption {
+            padding: 0.5rem;
+            font-size: 1rem;
+            color: #333;
+        }
+        figure:focus, figure:hover {
+            outline: 3px solid #007acc;
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Accessible Interactive Photo Gallery</h1>
+    </header>
+    <main>
+        <script>
+            // Image data array with alt text
+            const images = [
+                { src: "image1.jpeg", alt: "A serene mountain landscape" },
+                { src: "image2.jpeg", alt: "A vibrant city skyline at sunset" },
+                { src: "image3.jpg", alt: "A peaceful beach with golden sands" },
+                { src: "image4.jpg", alt: "A dense forest with sunlight filtering through" },
+                { src: "image5.jpg", alt: "A field of blooming colorful flowers" },
+                { src: "image6.jpg", alt: "A winding river through a canyon" }
+            ];
+
+            // Function to add tabindex attributes to figures
+            function addTabFocus() {
+                const figures = document.querySelectorAll("figure");
+                figures.forEach(figure => {
+                    figure.setAttribute("tabindex", "0");
+                });
+            }
+
+            // Function to log events
+            function logEvent(event, message) {
+                console.log(`${message}:`, event);
+            }
+
+            // Event listeners
+            function setupEventListeners() {
+                const figures = document.querySelectorAll("figure");
+                figures.forEach(figure => {
+                    figure.addEventListener("mouseover", (e) => logEvent(e, "Mouseover event"));
+                    figure.addEventListener("mouseleave", (e) => logEvent(e, "Mouseleave event"));
+                    figure.addEventListener("focus", (e) => logEvent(e, "Focus event"));
+                    figure.addEventListener("blur", (e) => logEvent(e, "Blur event"));
+                });
+            }
+
+            // Initialize gallery on load
+            function initGallery() {
+                const main = document.querySelector("main");
+                images.forEach(img => {
+                    const figure = document.createElement("figure");
+                    const image = document.createElement("img");
+                    const caption = document.createElement("figcaption");
+
+                    image.src = img.src;
+                    image.alt = img.alt;
+                    caption.textContent = img.alt;
+
+                    figure.appendChild(image);
+                    figure.appendChild(caption);
+                    main.appendChild(figure);
+                });
+
+                addTabFocus();
+                setupEventListeners();
+                console.log("Gallery initialized.");
+            }
+
+            window.onload = initGallery;
+        </script>
+    </main>
+</body>
+</html>
